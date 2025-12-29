@@ -8,11 +8,14 @@ import {
 } from "react-icons/fa";
 import { IoClose, IoMailOutline, IoCallOutline, IoChatbubbleOutline } from "react-icons/io5";
 import gsap from "gsap";
-import video from "../src/img/101655-video-720.mp4"
+import video from "../src/img/101655-video-720.mp4";
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showText, setShowText] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBangla, setIsBangla] = useState(true);
+
   const overlayRef = useRef(null);
   const leftMenuRef = useRef(null);
   const rightMenuRef = useRef(null);
@@ -22,41 +25,27 @@ export default function App() {
   const textRef = useRef(null);
   const iconsRef = useRef(null);
   const snowRef = useRef(null);
-  
-  // Modal refs
+
   const modalRef = useRef();
   const contentRef = useRef();
   const backdropRef = useRef();
 
-  const [isBangla, setIsBangla] = useState(true);
+  const toggleLanguage = () => setIsBangla(!isBangla);
 
-  const toggleLanguage = () => {
-    setIsBangla(!isBangla);
-  };
+  const heroImageUrl =
+    "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80";
 
-  // Keep your chosen dark space background
-  const heroImageUrl = "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80";
-
-  // Menu animation - FIXED WITH NULL CHECK
- 
-
-
+  /* ================= MENU ANIMATION ================= */
   useEffect(() => {
     if (!menuOpen) return;
-
     const isMobile = window.innerWidth < 768;
+    const tl = gsap.timeline({ defaults: { ease: "expo.out", duration: 0.6 } });
 
-    const tl = gsap.timeline({
-      defaults: { ease: "expo.out", duration: 0.6 },
-    });
-
-    /* ================= Overlay ================= */
     if (overlayRef.current) {
       gsap.set(overlayRef.current, { willChange: "transform" });
       tl.fromTo(overlayRef.current, { xPercent: -100 }, { xPercent: 0 });
     }
 
-    /* ================= Left Menu ================= */
     if (leftMenuRef.current) {
       const leftItems = leftMenuRef.current.children;
       tl.fromTo(
@@ -67,12 +56,11 @@ export default function App() {
       );
     }
 
-    /* ================= Right Menu TEXT ================= */
     if (rightMenuRef.current) {
       const rightItems = rightMenuRef.current.querySelectorAll("p, h2, div");
       tl.fromTo(
         rightItems,
-        { x: isMobile ? -40 : -100, opacity: 0 }, // left to right slide
+        { x: isMobile ? -40 : -100, opacity: 0 },
         { x: 0, opacity: 1, stagger: 0.12 },
         "-=0.45"
       );
@@ -81,10 +69,7 @@ export default function App() {
     return () => tl.kill();
   }, [menuOpen]);
 
-
-
-
-  // Glass / Prism subtle movement
+  /* ================= HERO GLASS ANIMATION ================= */
   useEffect(() => {
     if (noiseRef.current) {
       gsap.to(noiseRef.current, {
@@ -94,13 +79,9 @@ export default function App() {
         ease: "none",
       });
     }
-  }, []);
-
-  // Cinematic zoom in/out
-  useEffect(() => {
     if (heroRef.current && maskRef.current) {
       gsap.to([heroRef.current, maskRef.current], {
-        scale: 1.10,
+        scale: 1.1,
         duration: 30,
         repeat: -1,
         yoyo: true,
@@ -109,17 +90,15 @@ export default function App() {
     }
   }, []);
 
-  // Auto show text after 3s
+  /* ================= TEXT & ICON ANIMATION ================= */
   useEffect(() => {
     const timer = setTimeout(() => setShowText(true), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Animate text and icons when they appear
   useEffect(() => {
     if (!showText) return;
 
-    // Text entrance
     if (textRef.current) {
       gsap.fromTo(
         textRef.current,
@@ -144,8 +123,7 @@ export default function App() {
       );
     }
 
-    // Icons entrance
-    if (iconsRef.current && iconsRef.current.children) {
+    if (iconsRef.current?.children) {
       gsap.fromTo(
         iconsRef.current.children,
         { y: -30, opacity: 0 },
@@ -170,39 +148,28 @@ export default function App() {
     }
   }, [showText]);
 
-  // Snowfall animation (after page load)
+  /* ================= SNOW ANIMATION ================= */
   useEffect(() => {
     const startSnow = () => {
       if (!snowRef.current) return;
-
-      const snowflakes = [];
       const snowCount = 300;
 
       for (let i = 0; i < snowCount; i++) {
-        const size = Math.random() * 8 + 1; // 1px to 9px
+        const size = Math.random() * 8 + 1;
         const flake = document.createElement("div");
-        flake.style.position = "absolute";
-        flake.style.width = `${size}px`;
-        flake.style.height = `${size}px`;
-        flake.style.background = "white";
-        flake.style.borderRadius = "50%";
-        flake.style.opacity = Math.random() * 0.8 + 0.2;
-        flake.style.top = `${Math.random() * 100}%`;
-        flake.style.left = `${Math.random() * 100}%`;
-        flake.style.pointerEvents = "none";
-        flake.style.zIndex = 15;
+        flake.style.cssText = `
+          position:absolute; width:${size}px; height:${size}px;
+          border-radius:50%; background:white; opacity:${Math.random() * 0.8 + 0.2};
+          top:${Math.random()*100}%; left:${Math.random()*100}%;
+          pointer-events:none; z-index:15;
+        `;
         snowRef.current.appendChild(flake);
-        snowflakes.push(flake);
-
-        const duration = Math.random() * 20 + 15;
-        const drift = Math.random() * 100 - 50;
-        const rotation = Math.random() * 360;
 
         gsap.to(flake, {
           y: "110vh",
-          x: `+=${drift}`,
-          rotation: rotation + 360,
-          duration: duration,
+          x: `+=${Math.random() * 100 - 50}`,
+          rotation: Math.random() * 360 + 360,
+          duration: Math.random() * 20 + 15,
           repeat: -1,
           ease: "linear",
           delay: Math.random() * 5,
@@ -210,110 +177,50 @@ export default function App() {
       }
     };
 
-    if (document.readyState === "complete") {
-      startSnow();
-    } else {
-      window.addEventListener("load", startSnow);
-      return () => window.removeEventListener("load", startSnow);
-    }
+    if (document.readyState === "complete") startSnow();
+    else window.addEventListener("load", startSnow);
+    return () => window.removeEventListener("load", startSnow);
   }, []);
 
-  // Modal animations with GSAP
+  /* ================= MODAL ANIMATION ================= */
   useEffect(() => {
-    if (isModalOpen) {
-      // Animation timeline
-      const tl = gsap.timeline();
-      
-      // Backdrop animation
-      if (backdropRef.current) {
-        tl.fromTo(backdropRef.current,
-          { opacity: 0 },
-          { opacity: 1, duration: 0.3, ease: "power2.out" }
-        );
-      }
-      
-      // Modal entrance animation
-      if (modalRef.current) {
-        tl.fromTo(modalRef.current,
-          {
-            scale: 0.8,
-            opacity: 0,
-            y: 50,
-            rotationX: 15
-          },
-          {
-            scale: 1,
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            duration: 0.5,
-            ease: "back.out(1.7)"
-          },
-          "-=0.2"
-        );
-      }
-      
-      // Content animation
-      if (contentRef.current && contentRef.current.children) {
-        tl.fromTo(contentRef.current.children,
-          {
-            opacity: 0,
-            y: 20
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.4,
-            stagger: 0.1,
-            ease: "power2.out"
-          },
-          "-=0.3"
-        );
-      }
-    }
+    if (!isModalOpen) return;
+    const tl = gsap.timeline();
+
+    if (backdropRef.current)
+      tl.fromTo(backdropRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+
+    if (modalRef.current)
+      tl.fromTo(
+        modalRef.current,
+        { scale: 0.8, opacity: 0, y: 50, rotationX: 15 },
+        { scale: 1, opacity: 1, y: 0, rotationX: 0, duration: 0.5, ease: "back.out(1.7)" },
+        "-=0.2"
+      );
+
+    if (contentRef.current?.children)
+      tl.fromTo(
+        contentRef.current.children,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, stagger: 0.1, duration: 0.4, ease: "power2.out" },
+        "-=0.3"
+      );
   }, [isModalOpen]);
 
   const handleCloseModal = () => {
     const tl = gsap.timeline();
-    
-    if (contentRef.current && contentRef.current.children) {
-      tl.to(contentRef.current.children, {
-        opacity: 0,
-        y: 20,
-        duration: 0.3,
-        stagger: -0.05,
-        ease: "power2.in"
-      });
-    }
-    
-    if (modalRef.current) {
-      tl.to(modalRef.current, {
-        scale: 0.8,
-        opacity: 0,
-        y: 50,
-        rotationX: 15,
-        duration: 0.4,
-        ease: "power2.in"
-      }, "-=0.2");
-    }
-    
-    if (backdropRef.current) {
-      tl.to(backdropRef.current, {
-        opacity: 0,
-        duration: 0.3,
-        ease: "power2.out",
-        onComplete: () => setIsModalOpen(false)
-      });
-    }
+    if (contentRef.current?.children)
+      tl.to(contentRef.current.children, { opacity: 0, y: 20, stagger: -0.05, duration: 0.3, ease: "power2.in" });
+
+    if (modalRef.current)
+      tl.to(modalRef.current, { scale: 0.8, opacity: 0, y: 50, rotationX: 15, duration: 0.4, ease: "power2.in" }, "-=0.2");
+
+    if (backdropRef.current)
+      tl.to(backdropRef.current, { opacity: 0, duration: 0.3, ease: "power2.out", onComplete: () => setIsModalOpen(false) });
   };
 
-  const handleEmailClick = () => {
-    window.location.href = 'mailto:your.email@gmail.com';
-  };
-
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+  const handleEmailClick = () => (window.location.href = "mailto:webdeveloper2324@gmail.com");
+  const handleOpenModal = () => setIsModalOpen(true);
 
   return (
     <section className="relative h-screen w-full overflow-hidden text-white">
