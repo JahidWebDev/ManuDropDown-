@@ -38,43 +38,51 @@ export default function App() {
   const heroImageUrl = "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80";
 
   // Menu animation - FIXED WITH NULL CHECK
+ 
+
+
   useEffect(() => {
     if (!menuOpen) return;
-    
-    const tl = gsap.timeline({ defaults: { ease: "expo.out", duration: 0.6 } });
-    
-    // Check if overlayRef exists
+
+    const isMobile = window.innerWidth < 768;
+
+    const tl = gsap.timeline({
+      defaults: { ease: "expo.out", duration: 0.6 },
+    });
+
+    /* ================= Overlay ================= */
     if (overlayRef.current) {
       gsap.set(overlayRef.current, { willChange: "transform" });
-      tl.fromTo(
-        overlayRef.current,
-        { xPercent: -100 },
-        { xPercent: 0 }
-      );
+      tl.fromTo(overlayRef.current, { xPercent: -100 }, { xPercent: 0 });
     }
-    
-    // Check if leftMenuRef and its children exist
-    if (leftMenuRef.current && leftMenuRef.current.children) {
+
+    /* ================= Left Menu ================= */
+    if (leftMenuRef.current) {
+      const leftItems = leftMenuRef.current.children;
       tl.fromTo(
-        leftMenuRef.current.children,
-        { x: -80, opacity: 0 },
+        leftItems,
+        { x: isMobile ? -40 : -80, opacity: 0 },
         { x: 0, opacity: 1, stagger: 0.08 },
         "-=0.35"
       );
     }
-    
-    // Check if rightMenuRef and its children exist
-    if (rightMenuRef.current && rightMenuRef.current.children) {
+
+    /* ================= Right Menu TEXT ================= */
+    if (rightMenuRef.current) {
+      const rightItems = rightMenuRef.current.querySelectorAll("p, h2, div");
       tl.fromTo(
-        rightMenuRef.current.children,
-        { x: 80, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.08 },
+        rightItems,
+        { x: isMobile ? -40 : -100, opacity: 0 }, // left to right slide
+        { x: 0, opacity: 1, stagger: 0.12 },
         "-=0.45"
       );
     }
-    
+
     return () => tl.kill();
   }, [menuOpen]);
+
+
+
 
   // Glass / Prism subtle movement
   useEffect(() => {
@@ -536,7 +544,7 @@ export default function App() {
             {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
 
-          <h1 className="hidden lg:block text-2xl font-bold uppercase">ZAHID</h1>
+          <h1 className="hidden lg:block text-2xl font-bold uppercase">Zahid <span className=" font-extralight">Hossen</span></h1>
 
           {/* Contact Button */}
           <button 
@@ -600,7 +608,7 @@ export default function App() {
                     </div>
                     <div className="text-left">
                       <p className="font-semibold group-hover:text-green-300 transition-colors">Email</p>
-                      <p className="text-sm text-white/60">your.email@gmail.com</p>
+                      <p className="text-sm text-white/60">webdeveloper2324@gmail.com</p>
                     </div>
                   </button>
                   
@@ -610,7 +618,7 @@ export default function App() {
                     </div>
                     <div>
                       <p className="font-semibold">Phone</p>
-                      <p className="text-sm text-white/60">+880 (XXX) XXX-XXXX</p>
+                      <p className="text-sm text-white/60">+880 (1777) 169849</p>
                     </div>
                   </div>
                 </div>
@@ -675,95 +683,92 @@ export default function App() {
      
 
           {/* LEFT SIDE - Minimalistic Menu */}
-          <div 
-            
-            className="w-full lg:w-1/2 relative z-10 flex items-center justify-center py-20 lg:py-0"
-          >
-<div className="text-left px-8 lg:pl-32">
-  {/* "I'm a" text */}
-  <p className="text-white text-lg lg:text-2xl tracking-[0.4em] mb-8 font-light uppercase">
-    I'm a
-  </p>
-  
-  {/* Developer Titles Stacked - SMALLER SIZE */}
-  <div className="space-y-[-0.1rem]">
-    <h2 className="text-5xl lg:text-8xl font-black text-white tracking-tight leading-[0.85]">
-      MERN-STACK
-    </h2>
-    <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tight leading-[0.85]">
-      DEVELOPER
-    </h2>
-    <div className="text-2xl lg:text-4xl font-medium text-white py-4">&</div>
-    <h2 className="text-5xl lg:text-8xl font-black text-white tracking-tight leading-[0.85]">
-      FRONTEND
-    </h2>
-    <h2 className="text-5xl lg:text-7xl font-black text-white tracking-tight leading-[0.85]">
-      DEVELOPER
-    </h2>
-  </div>
-</div> </div>
+       <div
+          ref={rightMenuRef}
+          className="w-full lg:w-1/2 relative z-10 flex items-center justify-center py-25 lg:py-0"
+        >
+          <div className="text-left px-8 lg:pl-32">
+            <p className="text-white text-lg lg:text-2xl tracking-[0.3em] mb-4 font-light uppercase">
+              I'm a
+            </p>
+            <div className="space-y-[-0.1rem]">
+              <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
+                MERN-STACK
+              </h2>
+              <h2 className="text-5xl lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
+                DEVELOPER
+              </h2>
+              <div className="text-2xl lg:text-4xl font-medium text-white py-4">&</div>
+              <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.85]">
+                FRONTEND
+              </h2>
+              <h2 className="text-5xl lg:text-7xl font-black text-white tracking-wider leading-[0.85]">
+                DEVELOPER
+              </h2>
+            </div>
+          </div>
+        </div>
+       
 
           {/* RIGHT SIDE - Navigation */}
- <div 
+<div 
   ref={rightMenuRef} 
-  className="w-full lg:w-1/2 relative z-10 flex items-center justify-center py-24 lg:py-0"
+  className="w-full lg:w-1/2 relative z-10 flex items-center justify-center py-16 sm:py-20 lg:py-0"
 >
-  <div className="text-right px-8 lg:pr-36 space-y-10">
-    {/* Work */}
-    <div className="group cursor-pointer">
-      <div className="flex items-center justify-end gap-8">
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90 transition-colors duration-300 font-medium">WORK</span>
-        <div className="w-48 h-0.5 bg-white/60 group-hover:w-40 group-hover:bg-white transition-all duration-500 ease-out"></div>
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90 transition-colors duration-300 font-medium">WORK</span>
+  <div className="text-center lg:text-right px-4 sm:px-6 lg:pr-36 space-y-6 sm:space-y-8 lg:space-y-10">
+
+    <div className="menu-item group cursor-pointer">
+      <div className="flex items-center justify-center lg:justify-end gap-4 sm:gap-6 lg:gap-8">
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">WORK</span>
+        <div className="w-24 sm:w-32 lg:w-48 h-0.5 bg-white/60 group-hover:w-28 sm:group-hover:w-36 lg:group-hover:w-40 transition-all duration-500 ease-out"></div>
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">WORK</span>
       </div>
     </div>
 
-    {/* Services */}
-    <div className="group cursor-pointer">
-      <div className="flex items-center justify-end gap-8">
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90 transition-colors duration-300 font-medium">SERVICES</span>
-        <div className="w-40 h-0.5 bg-white/60 group-hover:w-48 group-hover:bg-white transition-all duration-500 ease-out"></div>
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90 transition-colors duration-300 font-medium">SERVICES</span>
+    <div className="menu-item group cursor-pointer">
+      <div className="flex items-center justify-center lg:justify-end gap-4 sm:gap-6 lg:gap-8">
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">SERVICES</span>
+        <div className="w-20 sm:w-28 lg:w-40 h-0.5 bg-white/60 group-hover:w-28 sm:group-hover:w-36 lg:group-hover:w-48 transition-all duration-500 ease-out"></div>
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">SERVICES</span>
       </div>
     </div>
 
-    {/* About */}
-    <div className="group cursor-pointer">
-      <div className="flex items-center justify-end gap-8">
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90  duration-300 font-medium">ABOUT</span>
-        <div className="w-32 h-0.5 bg-white/60 group-hover:w-40 group-hover:bg-white transition-all duration-500 ease-out"></div>
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90  duration-300 font-medium">ABOUT</span>
+    <div className="menu-item group cursor-pointer">
+      <div className="flex items-center justify-center lg:justify-end gap-4 sm:gap-6 lg:gap-8">
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">ABOUT</span>
+        <div className="w-16 sm:w-24 lg:w-32 h-0.5 bg-white/60 group-hover:w-24 sm:group-hover:w-32 lg:group-hover:w-40 transition-all duration-500 ease-out"></div>
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">ABOUT</span>
       </div>
     </div>
 
-    {/* Contact */}
-    <div className="group cursor-pointer">
-      <div className="flex items-center justify-end gap-8">
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90  duration-300 font-medium">CONTACT</span>
-        <div className="w-40 h-0.5 bg-white/60 group-hover:w-48 group-hover:bg-white transition-all duration-500 ease-out"></div>
-        <span className="text-white text-2xl tracking-[0.2em] group-hover:text-white/90  duration-300 font-medium">CONTACT</span>
+    <div className="menu-item group cursor-pointer">
+      <div className="flex items-center justify-center lg:justify-end gap-4 sm:gap-6 lg:gap-8">
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">CONTACT</span>
+        <div className="w-20 sm:w-28 lg:w-40 h-0.5 bg-white/60 group-hover:w-28 sm:group-hover:w-36 lg:group-hover:w-48 transition-all duration-500 ease-out"></div>
+        <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">CONTACT</span>
       </div>
     </div>
 
-    {/* Year at bottom with React icon and path */}
-    <div className="mt-24">
-      <div className="flex items-center justify-end gap-4">
-        {/* React Icon */}
+    <div className="menu-item mt-16 sm:mt-20 lg:mt-24">
+      <div className="flex items-center justify-center lg:justify-end gap-3 sm:gap-4">
         <div className="text-white/40 hover:text-[#61DAFB] transition-colors duration-300">
-          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 18.1778L4.62 21L6 14.8222L0 9.82222L7.2 9.17778L12 3L16.8 9.17778L24 9.82222L18 14.8222L19.38 21L12 18.1778Z" />
           </svg>
         </div>
-        
-        {/* Divider path */}
-        <div className="w-8 h-px bg-white/30"></div>
-        
-        {/* Year with font-medium */}
-        <p className="text-white/40 text-base tracking-[0.3em] font-medium">© 2024</p>
+
+        <div className="w-6 sm:w-8 h-px bg-white/30"></div>
+
+        <p className="text-white/40 text-xs sm:text-sm lg:text-base tracking-[0.25em] lg:tracking-[0.3em] font-medium">
+          © 202
+        </p>
       </div>
     </div>
+
   </div>
 </div>
+
+
         </div>
       )}
     </section>
