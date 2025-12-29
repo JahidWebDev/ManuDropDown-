@@ -111,7 +111,7 @@ export default function App() {
 
   // Auto show text after 3s
   useEffect(() => {
-    const timer = setTimeout(() => setShowText(true), 3000);
+    const timer = setTimeout(() => setShowText(true), 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -683,37 +683,40 @@ export default function App() {
      
 
           {/* LEFT SIDE - Minimalistic Menu */}
-       <div
-          ref={rightMenuRef}
-          className="w-full lg:w-1/2 relative z-10 flex items-center justify-center py-25 lg:py-0"
-        >
-          <div className="text-left px-8 lg:pl-32">
-            <p className="text-white text-lg lg:text-2xl tracking-[0.3em] mb-4 font-light uppercase">
-              I'm a
-            </p>
-            <div className="space-y-[-0.1rem]">
-              <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
-                MERN-STACK
-              </h2>
-              <h2 className="text-5xl lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
-                DEVELOPER
-              </h2>
-              <div className="text-2xl lg:text-4xl font-medium text-white py-4">&</div>
-              <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.85]">
-                FRONTEND
-              </h2>
-              <h2 className="text-5xl lg:text-7xl font-black text-white tracking-wider leading-[0.85]">
-                DEVELOPER
-              </h2>
-            </div>
-          </div>
-        </div>
+    <div className="flex lg:mr-27 items-center justify-center h-screen w-full">
+  <div
+    ref={rightMenuRef}
+    className="w-full lg:w-1/1 relative z-10 flex items-center justify-center py-20 lg:py-0"
+  >
+    <div className="text-left px-8 lg:pl-32">
+      <p className="text-white text-lg lg:text-2xl tracking-[0.3em] mb-4 font-light uppercase">
+        I'm a
+      </p>
+      <div className="space-y-[-0.1rem]">
+        <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
+          MERN-STACK
+        </h2>
+        <h2 className="text-5xl lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
+          DEVELOPER
+        </h2>
+        <div className="text-2xl lg:text-4xl font-medium text-white py-4">&</div>
+        <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.85]">
+          FRONTEND
+        </h2>
+        <h2 className="text-5xl lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
+          DEVELOPER
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+
        
 
           {/* RIGHT SIDE - Navigation */}
 <div 
   ref={rightMenuRef} 
-  className="w-full lg:w-1/2 relative z-10 flex items-center justify-center py-16 sm:py-20 lg:py-0"
+  className="w-full lg:w-1/2 lg:mr-25 relative z-10 flex items-center justify-center py-16 sm:py-20 lg:py-0"
 >
   <div className="text-center lg:text-right px-4 sm:px-6 lg:pr-36 space-y-6 sm:space-y-8 lg:space-y-10">
 
@@ -760,7 +763,7 @@ export default function App() {
         <div className="w-6 sm:w-8 h-px bg-white/30"></div>
 
         <p className="text-white/40 text-xs sm:text-sm lg:text-base tracking-[0.25em] lg:tracking-[0.3em] font-medium">
-          © 202
+          © 2026
         </p>
       </div>
     </div>
