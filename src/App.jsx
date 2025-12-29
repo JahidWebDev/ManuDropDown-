@@ -36,38 +36,53 @@ export default function App() {
     "https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80";
 
   /* ================= MENU ANIMATION ================= */
-  useEffect(() => {
-    if (!menuOpen) return;
-    const isMobile = window.innerWidth < 768;
-    const tl = gsap.timeline({ defaults: { ease: "expo.out", duration: 0.6 } });
+useEffect(() => {
+  if (!menuOpen) return;
 
-    if (overlayRef.current) {
-      gsap.set(overlayRef.current, { willChange: "transform" });
-      tl.fromTo(overlayRef.current, { xPercent: -100 }, { xPercent: 0 });
-    }
+  const isMobile = window.innerWidth < 768;
+  const tl = gsap.timeline({ defaults: { ease: "power3.out", duration: 0.8 } });
 
-    if (leftMenuRef.current) {
-      const leftItems = leftMenuRef.current.children;
-      tl.fromTo(
-        leftItems,
-        { x: isMobile ? -40 : -80, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.08 },
-        "-=0.35"
-      );
-    }
+  // ================= Video / Overlay fade-in =================
+  if (overlayRef.current) {
+    gsap.set(overlayRef.current, { autoAlpha: 0, willChange: "transform" });
+    tl.to(overlayRef.current, { autoAlpha: 1, duration: 0.5 })
+      .fromTo(overlayRef.current, { xPercent: -100 }, { xPercent: 0, duration: 0.8 }, "-=0.3");
+  }
 
-    if (rightMenuRef.current) {
-      const rightItems = rightMenuRef.current.querySelectorAll("p, h2, div");
-      tl.fromTo(
-        rightItems,
-        { x: isMobile ? -40 : -100, opacity: 0 },
-        { x: 0, opacity: 1, stagger: 0.12 },
-        "-=0.45"
-      );
-    }
+  // ================= Left Menu =================
+  if (leftMenuRef.current) {
+    const leftItems = leftMenuRef.current.children;
+    tl.fromTo(
+      leftItems,
+      { x: isMobile ? -40 : -80, opacity: 0 },
+      { x: 0, opacity: 1, stagger: 0.12, duration: 0.8, ease: "power2.out" },
+      "-=0.5"
+    );
+  }
 
-    return () => tl.kill();
-  }, [menuOpen]);
+  // ================= Right Menu / Text =================
+  if (rightMenuRef.current) {
+    const rightItems = rightMenuRef.current.querySelectorAll("p, h2, div");
+    tl.fromTo(
+      rightItems,
+      { x: isMobile ? -40 : -100, opacity: 0 },
+      { x: 0, opacity: 1, stagger: 0.15, duration: 1, ease: "power2.out" },
+      "-=0.6"
+    );
+  }
+
+  // Optional: slight scale/float effect for text for extra polish
+  if (rightMenuRef.current) {
+    tl.to(
+      rightMenuRef.current,
+      { scale: 1.02, y: -5, repeat: -1, yoyo: true, duration: 3, ease: "sine.inOut" },
+      "-=0.5"
+    );
+  }
+
+  return () => tl.kill();
+}, [menuOpen]);
+
 
   /* ================= HERO GLASS ANIMATION ================= */
   useEffect(() => {
@@ -600,17 +615,17 @@ export default function App() {
         I'm a
       </p>
       <div className="space-y-[-0.1rem]">
-        <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
+        <h2 className="text-[40px] lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
           MERN-STACK
         </h2>
-        <h2 className="text-5xl lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
+        <h2 className="text-[40px] lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
           DEVELOPER
         </h2>
         <div className="text-2xl lg:text-4xl font-medium text-white py-4">&</div>
-        <h2 className="text-5xl lg:text-8xl font-black text-white tracking-wider leading-[0.85]">
+        <h2 className="text-[47px] lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
           FRONTEND
         </h2>
-        <h2 className="text-5xl lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
+        <h2 className="text-[40px] lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
           DEVELOPER
         </h2>
       </div>
