@@ -610,12 +610,12 @@ useEffect(() => {
     ref={rightMenuRef}
     className="w-full lg:w-1/1 relative z-10 flex items-center justify-center py-20 lg:py-0"
   >
-    <div className="text-left px-8 lg:pl-32">
+    <div className="text-left px-5 lg:pl-32">
       <p className="text-white text-lg lg:text-2xl tracking-[0.3em] mb-4 font-light uppercase">
         I'm a
       </p>
       <div className="space-y-[-0.1rem]">
-        <h2 className="text-[40px] lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
+        <h2 className="text-[43px] lg:text-8xl font-black text-white tracking-wider leading-[0.95]">
           MERN-STACK
         </h2>
         <h2 className="text-[40px] lg:text-7xl font-black text-white tracking-widest leading-[0.85]">
@@ -640,12 +640,12 @@ useEffect(() => {
   ref={rightMenuRef} 
   className="w-full lg:w-1/2 lg:mr-25 relative z-10 flex items-center justify-center py-16 sm:py-20 lg:py-0"
 >
-  <div className="text-center lg:text-right px-4 sm:px-6 lg:pr-36 space-y-6 sm:space-y-8 lg:space-y-10">
+  <div className="text-center lg:text-right px-4 sm:px-4  lg:pr-36 space-y-6 sm:space-y-8 lg:space-y-10">
 
     <div className="menu-item group cursor-pointer">
-      <div className="flex items-center justify-center lg:justify-end gap-4 sm:gap-6 lg:gap-8">
+      <div className="flex items-center justify-center lg:justify-end gap-4 sm:gap-4 lg:gap-8">
         <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">WORK</span>
-        <div className="w-24 sm:w-32 lg:w-48 h-0.5 bg-white/60 group-hover:w-28 sm:group-hover:w-36 lg:group-hover:w-40 transition-all duration-500 ease-out"></div>
+        <div className="w-24 sm:w-20 lg:w-48 h-0.5 bg-white/60 group-hover:w-28 sm:group-hover:w-36 lg:group-hover:w-40 transition-all duration-500 ease-out"></div>
         <span className="text-white text-base sm:text-lg lg:text-2xl tracking-[0.18em] lg:tracking-[0.2em] font-medium">WORK</span>
       </div>
     </div>
